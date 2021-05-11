@@ -37,7 +37,7 @@ background-color: #F9F8F3
 library(glmnet)
 library(glue)
 
-options(digits = 3, width = 110)
+options(digits = 3, width = 80)
 
 pkgs <- floor(nrow(available.packages(contrib.url("https://cran.r-project.org")))/1000)
 
@@ -351,7 +351,9 @@ class: inverse, middle, center
 
 # Loading the Meta-Package `r I(hexes(c("tidymodels")))`
 
-.code80[
+.pull-left-a-lot[
+
+.code60[
 ```{r detach, include = FALSE}
 detach("package:glmnet", character.only = TRUE)
 detach("package:Matrix", character.only = TRUE)
@@ -362,11 +364,20 @@ library(tidymodels)
 ```
 ]
 
+]
+.pull-right-a-little[
+
+.font90[
+
 Let's start by predicting the [ridership of the Chicago "L" trains](https://bookdown.org/max/FES/chicago-intro.html). 
 
 We have data over 5,698 days between 2001 and 2016 in `data(Chicago, package = "modeldata")`.
 
 What are our predictors? Date, weather data, home game schedules, 14-day lags at other stations. 
+]
+
+]
+
 
 ---
 
@@ -878,5 +889,9 @@ A package for interactive interrogation of model predictions.
 
 Thanks for the invitation to speak today!
 
-Special thanks for the RStudio folks who contributed so much to tidymodels: Davis Vaughan, Julia Silge, Alison Hill, and Desirée De Leon.
+Special thanks for the other folks who contributed so much to tidymodels: Edgar Ruiz, Emil Hvitfeldt, Alison Hill, Desirée De Leon, and the tidyverse team.
+
+These slides were made with the [`xaringan`](https://bookdown.org/yihui/rmarkdown/xaringan.html) package and styled by Alison Hill. 
+
+Sources are located at [`github.com/topepo/an-introduction-to-tidymodels`](https://github.com/topepo/an-introduction-to-tidymodels). 
 
