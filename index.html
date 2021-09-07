@@ -4,7 +4,7 @@
     <title>An introduction to tidymodels</title>
     <meta charset="utf-8" />
     <meta name="author" content="Max Kuhn" />
-    <script src="libs/header-attrs-2.7.4/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.9/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link rel="stylesheet" href="css/theme.css" type="text/css" />
     <link rel="stylesheet" href="css/fonts.css" type="text/css" />
@@ -36,7 +36,7 @@ background-color: #F9F8F3
 
 .pull-left[
 .font90[
-* R has always had a rich set of modeling tools that it inherited from S. For example, the formula interface has made it simple to specify potentially complex model structures.
+* R has always had a rich set of modeling tools that it inherited from S. For example, the formula interface has made it simple to specify potentially complex model structures.   
 
 * _R has cutting edge models_. Many researchers in various domains use R as their primary computing environment and their work often results in R packages.
 
@@ -45,12 +45,12 @@ background-color: #F9F8F3
 ]
 
 .pull-right[
-However, there is a huge _consistency problem_. For example:
-* There are two primary methods for specifying what terms are in a model. Not all models have both.
-* 99% of model functions automatically generate dummy variables.
+However, there is a huge _consistency problem_. For example: 
+* There are two primary methods for specifying what terms are in a model. Not all models have both. 
+* 99% of model functions automatically generate dummy variables. 
 * Many package developers don't know much about the language and omit OOP and other core R components.
 
-Two examples follow...
+Two examples follow... 
 ]
 
 
@@ -76,14 +76,14 @@ Syntax for computing predicted class probabilities:
 # Within-Package Inconsistency: `glmnet` Predictions
 
 
+ 
+The `glmnet` model can be used to fit regularized generalized linear models with a mixture of L&lt;sub&gt;1&lt;/sub&gt; and L&lt;sub&gt;2&lt;/sub&gt; penalties. 
 
-The `glmnet` model can be used to fit regularized generalized linear models with a mixture of L&lt;sub&gt;1&lt;/sub&gt; and L&lt;sub&gt;2&lt;/sub&gt; penalties.
+We'll look at what happens when we get predictions for a regression model (i.e. numeric _Y_) as well as classification models where _Y_ has two or three categorical values. 
 
-We'll look at what happens when we get predictions for a regression model (i.e. numeric _Y_) as well as classification models where _Y_ has two or three categorical values.
+The models shown below contain solutions for three regularization values ( `\(\lambda\)` ). 
 
-The models shown below contain solutions for three regularization values ( `\(\lambda\)` ).
-
-The predict method gives the results for all three at once (👍).
+The predict method gives the results for all three at once (👍). 
 
 
 ---
@@ -129,7 +129,7 @@ predict(two_class_mod, newx = new_x, type = "class")
 ```
 
 ```
-##          s0  s1  s2
+##          s0  s1  s2 
 ## sample_1 "a" "b" "b"
 ## sample_2 "a" "b" "b"
 ```
@@ -139,7 +139,7 @@ Not factors! That's different from what is required for the `y` argument. From `
 &gt; For `family="binomial"` [`y`] should be either a factor with two levels, or a two-column matrix of counts or proportions
 
 
-I'm guessing that this is because they want to keep the result a matrix (to be consistent).
+I'm guessing that this is because they want to keep the result a matrix (to be consistent). 
 
 
 ---
@@ -157,7 +157,7 @@ predict(two_class_mod, newx = new_x, type = "response")
 ## sample_2 0.5 0.5 0.526
 ```
 
-Okay, we get a matrix of the probability for the _second_ level of the outcome factor.
+Okay, we get a matrix of the probability for the _second_ level of the outcome factor. 
 
 To make this fit into most code, we can manually calculate the other probability. No biggie!
 
@@ -170,25 +170,25 @@ To make this fit into most code, we can manually calculate the other probability
 
 
 ```r
-predict(three_class_mod, newx = new_x,
+predict(three_class_mod, newx = new_x, 
         type = "response")
 ```
 
 ```
 ## , , s0
-##
+## 
 ##              a     b     c
 ## sample_1 0.333 0.333 0.333
 ## sample_2 0.333 0.333 0.333
-##
+## 
 ## , , s1
-##
+## 
 ##              a     b     c
 ## sample_1 0.333 0.333 0.333
 ## sample_2 0.333 0.333 0.333
-##
+## 
 ## , , s2
-##
+## 
 ##              a     b     c
 ## sample_1 0.373 0.244 0.383
 ## sample_2 0.327 0.339 0.334
@@ -200,7 +200,7 @@ predict(three_class_mod, newx = new_x,
 
 😳
 
-No more matrix results. 3D array and we get all of the probabilities back this time.
+No more matrix results. 3D array and we get all of the probabilities back this time. 
 
 _Am I working for `glmnet` or is it is working for me?_
 
@@ -208,13 +208,13 @@ Maybe a structure like this would work better:
 
 
 ```
-## # A tibble: 6 x 4
+## # A tibble: 6 × 4
 ##       a     b     c lambda
 ##   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;
-## 1 0.333 0.333 0.333   1
-## 2 0.333 0.333 0.333   1
-## 3 0.333 0.333 0.333   0.1
-## 4 0.333 0.333 0.333   0.1
+## 1 0.333 0.333 0.333   1   
+## 2 0.333 0.333 0.333   1   
+## 3 0.333 0.333 0.333   0.1 
+## 4 0.333 0.333 0.333   0.1 
 ## 5 0.373 0.244 0.383   0.01
 ## 6 0.327 0.339 0.334   0.01
 ```
@@ -226,17 +226,17 @@ Maybe a structure like this would work better:
 
 # What We Need
 
-Unless you are doing a simple one-off data analysis, the lack of consistency between, and sometimes within, R packages can be very frustrating.
+Unless you are doing a simple one-off data analysis, the lack of consistency between, and sometimes within, R packages can be very frustrating. 
 
-If we could agree on a set of common conventions for interfaces, return values, and other components, everyone's life would be easier.
+If we could agree on a set of common conventions for interfaces, return values, and other components, everyone's life would be easier. 
 
-Once we agree on conventions, **two challenges** are:
+Once we agree on conventions, **two challenges** are: 
 
- * As of May 2021, there are over 17K R packages on CRAN. How do we "harmonize" these without breaking everything?
-
+ * As of Sep 2021, there are over 18K R packages on CRAN. How do we "harmonize" these without breaking everything? 
+ 
  * How can we guide new R users (or people unfamiliar with R) in making good choices in their modeling packages?
-
-These prospective and retrospective problems will be addressed in a minute.
+ 
+These prospective and retrospective problems will be addressed in a minute. 
 
 
 ---
@@ -247,9 +247,9 @@ background-size: contain
 
 .pull-left[
 
-## Our job is to make modeling data with R ~~suck less~~ better&lt;sup&gt;1&lt;/sup&gt;.
+## Our job is to make modeling data with R ~~suck less~~ better&lt;sup&gt;1&lt;/sup&gt;. 
 
-## "Modeling" includes everything from classical statistical methods to machine learning.
+## "Modeling" includes everything from classical statistical methods to machine learning. 
 
 .footnote[&lt;sup&gt;1&lt;/sup&gt; Narrator: _It's actually pretty good_]
 
@@ -261,38 +261,38 @@ background-size: contain
 
 .pull-left[
 
-The [tidyverse](http://www.tidyverse.org/) is an opinionated collection of R packages designed for data science. All packages share an underlying design philosophy, grammar, and data structures.
+The [tidyverse](http://www.tidyverse.org/) is an opinionated collection of R packages designed for data science. All packages share an underlying design philosophy, grammar, and data structures. 
 
 
-The principles of the tidyverse:
+The principles of the tidyverse: 
 
 1. Reuse existing data structures.
 1. Compose simple functions with the pipe.
 1. Embrace functional programming.
 1. Design for humans.
 
-This results in more specific conventions around interfaces, function naming, etc.
+This results in more specific conventions around interfaces, function naming, etc. 
 
 ]s
 .pull-right[
 For example, we try to use common prefixes for auto-complete:  `grid_latin_hypercube()`, `grid_max_entropy()`, ...
 
-There is also the notion of [tidy data](http://vita.had.co.nz/papers/tidy-data.pdf):
+There is also the notion of [tidy data](http://vita.had.co.nz/papers/tidy-data.pdf): 
 
 1. Each variable forms a column.
 1. Each observation forms a row.
 1. Each type of observational unit forms a table.
 
-Based on these ideas, we can create modeling packages that have predictable results and are a pleasure to use.
+Based on these ideas, we can create modeling packages that have predictable results and are a pleasure to use. 
 
-]
+] 
 
 
 ---
 
-# Tidymodels
+# Tidymodels 
 
-`tidymodels` is a collection of modeling packages that live in the tidyverse and are designed in the same way.
+`tidymodels` is a collection of modeling packages that live in the tidyverse and are designed in the same way. 
 
 My goals for tidymodels are:
 
@@ -304,7 +304,7 @@ My goals for tidymodels are:
 
 1. Enable a wider variety of methodologies.
 
-The `tidymodels` packages address the *retrospective* and *prospective* issues. We are also developing a set of principles and templates to make *prospective* (new R packages) easy to create.
+The `tidymodels` packages address the *retrospective* and *prospective* issues. We are also developing a set of principles and templates to make *prospective* (new R packages) easy to create. 
 
 ---
 background-image: url(images/hex_wall.png)
@@ -324,18 +324,18 @@ class: inverse, middle, center
 
 ---
 
-# Selected Modeling Packages
+# Selected Modeling Packages 
 
 
 * [`broom`](https://broom.tidymodels.org/) takes the messy output of built-in functions in R, such as `lm`, `nls`, or `t.test`, and turns them into tidy data frames.
 
 * [`recipes`](https://recipes.tidymodels.org/) is a general data preprocessor with a modern interface. It can create model matrices that incorporate feature engineering, imputation, and other tools.
 
-* [`rsample`](https://rsample.tidymodels.org/) has infrastructure for _resampling_ data so that models can be assessed and empirically validated.
+* [`rsample`](https://rsample.tidymodels.org/) has infrastructure for _resampling_ data so that models can be assessed and empirically validated. 
 
 * [`parsnip`](https://parsnip.tidymodels.org/) gives us a unified modeling interface.
 
-* [`tune`](https://tune.tidymodels.org/) has functions for grid search and sequential optimization of model parameters.
+* [`tune`](https://tune.tidymodels.org/) has functions for grid search and sequential optimization of model parameters. 
 
 
 
@@ -358,14 +358,14 @@ library(tidymodels)
 ```
 
 ```
-## ✓ broom        0.7.6          ✓ recipes      0.1.16
-## ✓ dials        0.0.9.9000     ✓ rsample      0.0.9
-## ✓ dplyr        1.0.6          ✓ tibble       3.1.1
-## ✓ ggplot2      3.3.3.9000     ✓ tidyr        1.1.3
-## ✓ infer        0.5.4          ✓ tune         0.1.4
-## ✓ modeldata    0.1.0          ✓ workflows    0.2.2.9000
-## ✓ parsnip      0.1.5.9002     ✓ workflowsets 0.0.2
-## ✓ purrr        0.3.4          ✓ yardstick    0.0.8
+## ✓ broom        0.7.9      ✓ recipes      0.1.16
+## ✓ dials        0.0.9      ✓ rsample      0.1.0 
+## ✓ dplyr        1.0.7      ✓ tibble       3.1.3 
+## ✓ ggplot2      3.3.5      ✓ tidyr        1.1.3 
+## ✓ infer        1.0.0      ✓ tune         0.1.6 
+## ✓ modeldata    0.1.1      ✓ workflows    0.2.3 
+## ✓ parsnip      0.1.7      ✓ workflowsets 0.1.0 
+## ✓ purrr        0.3.4      ✓ yardstick    0.0.8
 ```
 
 ```
@@ -374,6 +374,25 @@ library(tidymodels)
 ## x purrr::discard()  masks scales::discard()
 ## • Use tidymodels_prefer() to resolve common conflicts.
 ```
+
+```r
+tidymodels_prefer(quiet = FALSE)
+```
+
+```
+## [conflicted] Will prefer dplyr::filter over any other package
+## [conflicted] Will prefer dplyr::select over any other package
+## [conflicted] Will prefer dplyr::slice over any other package
+## [conflicted] Will prefer dplyr::rename over any other package
+## [conflicted] Will prefer dials::neighbors over any other package
+## [conflicted] Will prefer parsnip::fit over any other package
+## [conflicted] Will prefer plsmod::pls over any other package
+## [conflicted] Will prefer purrr::map over any other package
+## [conflicted] Will prefer recipes::step over any other package
+## [conflicted] Will prefer themis::step_downsample over any other package
+## [conflicted] Will prefer themis::step_upsample over any other package
+##  etc etc...
+```
 ]
 
 ]
@@ -381,11 +400,11 @@ library(tidymodels)
 
 .font90[
 
-Let's start by predicting the [ridership of the Chicago "L" trains](https://bookdown.org/max/FES/chicago-intro.html).
+Let's start by predicting the [ridership of the Chicago "L" trains](https://bookdown.org/max/FES/chicago-intro.html). 
 
 We have data over 5,698 days between 2001 and 2016 in `data(Chicago, package = "modeldata")`.
 
-What are our predictors? Date, weather data, home game schedules, 14-day lags at other stations.
+What are our predictors? Date, weather data, home game schedules, 14-day lags at other stations. 
 ]
 
 ]
@@ -407,7 +426,7 @@ chicago_rec &lt;- recipe(ridership ~ ., data = Chicago)
 
 
 ```r
-chicago_rec &lt;- recipe(ridership ~ ., data = Chicago) %&gt;%
+chicago_rec &lt;- recipe(ridership ~ ., data = Chicago) %&gt;% 
 * step_date(date, features = c("dow", "month", "year"))
 ```
 
@@ -418,8 +437,8 @@ chicago_rec &lt;- recipe(ridership ~ ., data = Chicago) %&gt;%
 
 
 ```r
-chicago_rec &lt;- recipe(ridership ~ ., data = Chicago) %&gt;%
-  step_date(date, features = c("dow", "month", "year")) %&gt;%
+chicago_rec &lt;- recipe(ridership ~ ., data = Chicago) %&gt;% 
+  step_date(date, features = c("dow", "month", "year")) %&gt;% 
 * step_holiday(date)
 ```
 
@@ -430,9 +449,9 @@ chicago_rec &lt;- recipe(ridership ~ ., data = Chicago) %&gt;%
 
 
 ```r
-chicago_rec &lt;- recipe(ridership ~ ., data = Chicago) %&gt;%
-  step_date(date, features = c("dow", "month", "year")) %&gt;%
-  step_holiday(date) %&gt;%
+chicago_rec &lt;- recipe(ridership ~ ., data = Chicago) %&gt;% 
+  step_date(date, features = c("dow", "month", "year")) %&gt;% 
+  step_holiday(date) %&gt;% 
 * update_role(date, new_role = "id")
 ```
 
@@ -443,22 +462,22 @@ chicago_rec &lt;- recipe(ridership ~ ., data = Chicago) %&gt;%
 
 
 ```r
-chicago_rec &lt;- recipe(ridership ~ ., data = Chicago) %&gt;%
-  step_date(date, features = c("dow", "month", "year")) %&gt;%
-  step_holiday(date) %&gt;%
-  update_role(date, new_role = "id") %&gt;%
+chicago_rec &lt;- recipe(ridership ~ ., data = Chicago) %&gt;% 
+  step_date(date, features = c("dow", "month", "year")) %&gt;% 
+  step_holiday(date) %&gt;% 
+  update_role(date, new_role = "id") %&gt;% 
 * step_dummy(all_nominal_predictors())
 ```
 
 
 
-The `all_*_predictors()` functions are in the devel `recipes` version. Other selectors are:
+Other selectors are:
 
  * `all_nominal()`, `all_numeric()`, and `has_type()`
-
+ 
  * `all_predictors()`, `all_outcomes()`, and `has_role()`
-
- * Standard `dplyr` selectors like `starts_with()` and so on.
+ 
+ * Standard `dplyr` selectors like `starts_with()` and so on. 
 
 
 ---
@@ -467,11 +486,11 @@ The `all_*_predictors()` functions are in the devel `recipes` version. Other sel
 
 
 ```r
-chicago_rec &lt;- recipe(ridership ~ ., data = Chicago) %&gt;%
-  step_date(date, features = c("dow", "month", "year")) %&gt;%
-  step_holiday(date) %&gt;%
-  update_role(date, new_role = "id") %&gt;%
-  step_dummy(all_nominal_predictors()) %&gt;%
+chicago_rec &lt;- recipe(ridership ~ ., data = Chicago) %&gt;% 
+  step_date(date, features = c("dow", "month", "year")) %&gt;% 
+  step_holiday(date) %&gt;% 
+  update_role(date, new_role = "id") %&gt;% 
+  step_dummy(all_nominal_predictors()) %&gt;% 
 * step_normalize(all_numeric_predictors())
 ```
 
@@ -482,12 +501,12 @@ chicago_rec &lt;- recipe(ridership ~ ., data = Chicago) %&gt;%
 
 
 ```r
-chicago_rec &lt;- recipe(ridership ~ ., data = Chicago) %&gt;%
-  step_date(date, features = c("dow", "month", "year")) %&gt;%
-  step_holiday(date) %&gt;%
-  update_role(date, new_role = "id") %&gt;%
-  step_dummy(all_nominal_predictors()) %&gt;%
-  step_normalize(all_numeric_predictors())
+chicago_rec &lt;- recipe(ridership ~ ., data = Chicago) %&gt;% 
+  step_date(date, features = c("dow", "month", "year")) %&gt;% 
+  step_holiday(date) %&gt;% 
+  update_role(date, new_role = "id") %&gt;% 
+  step_dummy(all_nominal_predictors()) %&gt;% 
+  step_normalize(all_numeric_predictors()) 
 
 *#?  step_pca(one_of(stations), num_comp = 10)
 ```
@@ -499,12 +518,12 @@ chicago_rec &lt;- recipe(ridership ~ ., data = Chicago) %&gt;%
 
 
 ```r
-chicago_rec &lt;- recipe(ridership ~ ., data = Chicago) %&gt;%
-  step_date(date, features = c("dow", "month", "year")) %&gt;%
-  step_holiday(date) %&gt;%
-  update_role(date, new_role = "id") %&gt;%
-  step_dummy(all_nominal_predictors()) %&gt;%
-  step_normalize(all_numeric_predictors())
+chicago_rec &lt;- recipe(ridership ~ ., data = Chicago) %&gt;% 
+  step_date(date, features = c("dow", "month", "year")) %&gt;% 
+  step_holiday(date) %&gt;% 
+  update_role(date, new_role = "id") %&gt;% 
+  step_dummy(all_nominal_predictors()) %&gt;% 
+  step_normalize(all_numeric_predictors()) 
 
 *#?  step_umap(one_of(stations), outcome = vars(ridership), num_comp = 10)
 ```
@@ -516,12 +535,12 @@ chicago_rec &lt;- recipe(ridership ~ ., data = Chicago) %&gt;%
 
 
 ```r
-chicago_rec &lt;- recipe(ridership ~ ., data = Chicago) %&gt;%
-  step_date(date, features = c("dow", "month", "year")) %&gt;%
-  step_holiday(date) %&gt;%
-  update_role(date, new_role = "id") %&gt;%
-  step_dummy(all_nominal_predictors()) %&gt;%
-  step_normalize(all_numeric_predictors())
+chicago_rec &lt;- recipe(ridership ~ ., data = Chicago) %&gt;% 
+  step_date(date, features = c("dow", "month", "year")) %&gt;% 
+  step_holiday(date) %&gt;% 
+  update_role(date, new_role = "id") %&gt;% 
+  step_dummy(all_nominal_predictors()) %&gt;% 
+  step_normalize(all_numeric_predictors()) 
 
 *#?  step_ns(Harlem, deg_free = 5)
 ```
@@ -532,12 +551,12 @@ chicago_rec &lt;- recipe(ridership ~ ., data = Chicago) %&gt;%
 
 
 ```r
-chicago_rec &lt;- recipe(ridership ~ ., data = Chicago) %&gt;%
-  step_date(date, features = c("dow", "month", "year")) %&gt;%
-  step_holiday(date) %&gt;%
-  update_role(date, new_role = "id") %&gt;%
-  step_dummy(all_nominal_predictors()) %&gt;%
-  step_normalize(all_numeric_predictors())
+chicago_rec &lt;- recipe(ridership ~ ., data = Chicago) %&gt;% 
+  step_date(date, features = c("dow", "month", "year")) %&gt;% 
+  step_holiday(date) %&gt;% 
+  update_role(date, new_role = "id") %&gt;% 
+  step_dummy(all_nominal_predictors()) %&gt;% 
+  step_normalize(all_numeric_predictors()) 
 
 *#?  step_mutate(temp = (32 * temp − 32) * 5 / 9 )
 ```
@@ -546,7 +565,7 @@ chicago_rec &lt;- recipe(ridership ~ ., data = Chicago) %&gt;%
 
 ***Let's fit a linear regression model!***
 
-With `parsnip`, we first create an object that specifies the _type_ of model and then the software _engine_ to do the fit.
+With `parsnip`, we first create an object that specifies the _type_ of model and then the software _engine_ to do the fit. 
 
 ---
 
@@ -557,7 +576,7 @@ With `parsnip`, we first create an object that specifies the _type_ of model and
 
 
 ```r
-linear_mod &lt;- linear_reg()
+linear_mod &lt;- linear_reg() 
 ```
 
 This says "Let's fit a model with a numeric outcome, and intercept, and slopes for each predictor."
@@ -565,7 +584,7 @@ This says "Let's fit a model with a numeric outcome, and intercept, and slopes f
 * Other model types include `nearest_neighbors()`, `decision_tree()`, `rand_forest()`, `arima_reg()`, and so on.
 
 
-The `set_engine()` function gives the details on _how_ it should be fit.
+The `set_engine()` function gives the details on _how_ it should be fit. 
 
 ]
 
@@ -659,8 +678,8 @@ linear_mod &lt;- linear_reg() %&gt;% set_engine("stan")
 
 
 ```r
-linear_mod &lt;-
-  linear_reg() %&gt;%
+linear_mod &lt;- 
+  linear_reg() %&gt;% 
   set_engine("glmnet")
 ```
 
@@ -681,8 +700,8 @@ linear_mod &lt;-
 
 
 ```r
-linear_mod &lt;-
-  linear_reg(penalty = 0.1, mixture = 0.5) %&gt;%
+linear_mod &lt;- 
+  linear_reg(penalty = 0.1, mixture = 0.5) %&gt;% 
   set_engine("glmnet")
 ```
 
@@ -702,9 +721,9 @@ We can _optionally_ bundle the recipe and model together into a &lt;span style="
 
 
 ```r
-glmnet_wflow &lt;-
-  workflow() %&gt;%
-  add_model(linear_mod) %&gt;%
+glmnet_wflow &lt;- 
+  workflow() %&gt;% 
+  add_model(linear_mod) %&gt;% 
   add_recipe(chicago_rec) # or add_formula() or add_variables()
 ```
 
@@ -718,14 +737,14 @@ predict(glmnet_fit, Chicago %&gt;% slice(1:7))
 ```
 
 ```
-## # A tibble: 7 x 1
+## # A tibble: 7 × 1
 ##   .pred
 ##   &lt;dbl&gt;
-## 1 13.8
-## 2 15.0
-## 3 14.7
-## 4 14.6
-## 5 14.1
+## 1 13.8 
+## 2 15.0 
+## 3 14.7 
+## 4 14.6 
+## 5 14.1 
 ## 6  2.36
 ## 7  1.73
 ```
@@ -736,22 +755,22 @@ predict(glmnet_fit, Chicago %&gt;% slice(1:7))
 
 # Model tuning &lt;img src="images/workflows.svg" class="title-hex"&gt;&lt;img src="images/tune.svg" class="title-hex"&gt;&lt;img src="images/recipes.svg" class="title-hex"&gt;&lt;img src="images/parsnip.svg" class="title-hex"&gt;
 
-We probably don't have a good idea for what `penalty` and `mixture` should be?
+We probably don't have a good idea for what `penalty` and `mixture` should be? 
 
 We can _mark them for tuning_ :
 
 
 ```r
-linear_mod &lt;-
-  linear_reg(penalty = tune(), mixture = tune()) %&gt;%
+linear_mod &lt;- 
+  linear_reg(penalty = tune(), mixture = tune()) %&gt;% 
   set_engine("glmnet")
 
-glmnet_wflow &lt;-
-  glmnet_wflow %&gt;%
+glmnet_wflow &lt;- 
+  glmnet_wflow %&gt;% 
   update_model(linear_mod)
 ```
 
-Recipe arguments can also be simultaneously tuned (e.g. `num_comp` in `step_pca()`).
+Recipe arguments can also be simultaneously tuned (e.g. `num_comp` in `step_pca()`). 
 
 ---
 
@@ -759,7 +778,7 @@ Recipe arguments can also be simultaneously tuned (e.g. `num_comp` in `step_pca(
 
 We'll use time series resampling and grid search to optimize the model:
 
-.code80[
+.code80[ 
 
 .pull-left[
 
@@ -767,7 +786,7 @@ We'll use time series resampling and grid search to optimize the model:
 
 
 ```r
-chicago_rs &lt;-
+chicago_rs &lt;- 
   sliding_period(
     Chicago,
     date,
@@ -779,10 +798,10 @@ chicago_rs
 ```
 
 ```
-## # Sliding period resampling
-## # A tibble: 19 x 2
-##    splits            id
-##    &lt;list&gt;            &lt;chr&gt;
+## # Sliding period resampling 
+## # A tibble: 19 × 2
+##    splits            id     
+##    &lt;list&gt;            &lt;chr&gt;  
 ##  1 &lt;split [5123/28]&gt; Slice01
 ##  2 &lt;split [5141/31]&gt; Slice02
 ##  3 &lt;split [5144/30]&gt; Slice03
@@ -815,17 +834,17 @@ library(doMC)
 registerDoMC(cores = parallel::detectCores())
 
 set.seed(1)
-glmnet_tune &lt;-
-  glmnet_wflow %&gt;%
+glmnet_tune &lt;- 
+  glmnet_wflow %&gt;% 
   tune_grid(chicago_rs, grid = 25)
 
 show_best(glmnet_tune, metric = "rmse")
 ```
 
 ```
-## # A tibble: 5 x 8
-##    penalty mixture .metric .estimator  mean     n std_err .config
-##      &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;
+## # A tibble: 5 × 8
+##    penalty mixture .metric .estimator  mean     n std_err .config              
+##      &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;                
 ## 1 3.02e- 3   0.505 rmse    standard    2.05    19   0.198 Preprocessor1_Model12
 ## 2 1.15e- 3   0.539 rmse    standard    2.05    19   0.196 Preprocessor1_Model13
 ## 3 1.57e-10   0.461 rmse    standard    2.05    19   0.196 Preprocessor1_Model11
@@ -866,7 +885,7 @@ autoplot(glmnet_tune)
 
 # Next steps
 
-There are functions to plot the results, substitute the best parameters for the `tune()` placeholders, fit the final model, measure the test set performance, etc etc.
+There are functions to plot the results, substitute the best parameters for the `tune()` placeholders, fit the final model, measure the test set performance, etc etc. 
 
 These API's focus on harmonizing _Existing_ packages.
 
@@ -881,14 +900,14 @@ These API's focus on harmonizing _Existing_ packages.
 .font90[
 We have [a set of _guidelines_](https://tidymodels.github.io/model-implementation-principles/) for making good modeling packages. For example:
 
- * Separate the interface that the **modeler** uses from the code to do the computations. They serve two very different purposes.
- * Have multiple interfaces (e.g. formula, x/y, etc).
- * The _user-facing interface_ should use the most appropriate data structures for the data (as opposed to the computations). For example, factor outcomes versus 0/1 indicators and data frames versus matrices.
- * `type = "prob"` for class probabilities 😄.
- * Use S3 methods.
- * The `predict` method should give standardized, predictable results.
+ * Separate the interface that the **modeler** uses from the code to do the computations. They serve two very different purposes. 
+ * Have multiple interfaces (e.g. formula, x/y, etc). 
+ * The _user-facing interface_ should use the most appropriate data structures for the data (as opposed to the computations). For example, factor outcomes versus 0/1 indicators and data frames versus matrices. 
+ * `type = "prob"` for class probabilities 😄. 
+ * Use S3 methods.  
+ * The `predict` method should give standardized, predictable results. 
 
-Rather than try to make methodologists into software developers, have tools to **help them create high quality modeling packages**.
+Rather than try to make methodologists into software developers, have tools to **help them create high quality modeling packages**. 
 
 ]
 
@@ -896,9 +915,9 @@ Rather than try to make methodologists into software developers, have tools to *
 
 # Making better packages &lt;img src="images/hardhat.svg" class="title-hex"&gt;
 
-We have methods for creating all of the S3 scaffolding for modeling packages.
+We have methods for creating all of the S3 scaffolding for modeling packages. 
 
-You have some functions for creating a model fit; `hardhat` provides a package directory using best practices:
+You have some functions for creating a model fit; `hardhat` provides a package directory using best practices: 
 
 
 ```r
@@ -925,10 +944,9 @@ These models are used to predict time-to-event data (in medicine, sports, HR, et
 
 Not sexy. Really tedious. Often requested.  This will impact many of the tidymodels packages.
 
-### shinymodels
+### Supervise feature selection
 
-A package for interactive interrogation of model predictions.
-
+Via recipe steps and other functions (e.g., `rfe()`).
 
 ---
 
@@ -936,11 +954,13 @@ A package for interactive interrogation of model predictions.
 
 Thanks for the invitation to speak today!
 
+The tidymodels team: Davis Vaughan, Julia Silge, and Hanna Frick. 
+
 Special thanks for the other folks who contributed so much to tidymodels: Edgar Ruiz, Emil Hvitfeldt, Alison Hill, Desirée De Leon, and the tidyverse team.
 
-These slides were made with the [`xaringan`](https://bookdown.org/yihui/rmarkdown/xaringan.html) package and styled by Alison Hill.
+These slides were made with the [`xaringan`](https://bookdown.org/yihui/rmarkdown/xaringan.html) package and styled by Alison Hill. 
 
-Sources are located at [`github.com/topepo/an-introduction-to-tidymodels`](https://github.com/topepo/an-introduction-to-tidymodels).
+Sources are located at [`github.com/topepo/an-introduction-to-tidymodels`](https://github.com/topepo/an-introduction-to-tidymodels). 
 
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>

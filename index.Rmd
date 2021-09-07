@@ -361,6 +361,7 @@ detach("package:stats", character.only = TRUE)
 ```
 ```{r load-tm, warning = FALSE}
 library(tidymodels)
+tidymodels_prefer(quiet = FALSE)
 ```
 ]
 
@@ -435,7 +436,7 @@ chicago_rec <- recipe(ridership ~ ., data = Chicago) %>%
 
 
 
-The `all_*_predictors()` functions are in the devel `recipes` version. Other selectors are:
+Other selectors are:
 
  * `all_nominal()`, `all_numeric()`, and `has_type()`
  
@@ -878,16 +879,17 @@ These models are used to predict time-to-event data (in medicine, sports, HR, et
 
 Not sexy. Really tedious. Often requested.  This will impact many of the tidymodels packages.
 
-### shinymodels
+### Supervise feature selection
 
-A package for interactive interrogation of model predictions. 
-
+Via recipe steps and other functions (e.g., `rfe()`).
 
 ---
 
 # Thanks
 
 Thanks for the invitation to speak today!
+
+The tidymodels team: Davis Vaughan, Julia Silge, and Hanna Frick. 
 
 Special thanks for the other folks who contributed so much to tidymodels: Edgar Ruiz, Emil Hvitfeldt, Alison Hill, Desirée De Leon, and the tidyverse team.
 
