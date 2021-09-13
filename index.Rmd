@@ -169,65 +169,48 @@ A matrix result and we will assume that the $\lambda$ values are in the same ord
 
 
 ---
+# `glmnet` predictions formats
 
-# `glmnet` Class Predictions
+**Numeric model, numeric prediction**
 
-Predicting an outcome with two classes:
+ - numeric sample x penalty array
 
-```{r glmnet-2class}
-predict(two_class_mod, newx = new_x, type = "class")
-```
+--
 
-Not factors! That's different from what is required for the `y` argument. From `?glmnet`:
+**Binary model, class prediction**
 
-> For `family="binomial"` [`y`] should be either a factor with two levels, or a two-column matrix of counts or proportions
+- _character_ sample x penalty array  (Note: outcome input is required to be a factor)
+
+--
+
+**Binary model, probability prediction**
+
+- _numeric_ sample x penalty array (values are 2nd factor level)
+
+--
+
+**Multinomial model, probability prediction**
+
+- _numeric_ class x sample x penalty array
 
 
-I'm guessing that this is because they want to keep the result a matrix (to be consistent). 
-
-
----
-
-# `glmnet` Class Probabilities (Two Classes)
-
-```{r glmnet-2class-prob}
-predict(two_class_mod, newx = new_x, type = "response")
-```
-
-Okay, we get a matrix of the probability for the _second_ level of the outcome factor. 
-
-To make this fit into most code, we can manually calculate the other probability. No biggie!
 
 
 ---
 
-# `glmnet` Class Probabilities (Three Classes)
-
-.pull-left[
-
-```{r glmnet-3class-prob}
-predict(three_class_mod, newx = new_x, 
-        type = "response")
-```
-
-]
-.pull-right[
-
+# `glmnet` predictions formats
 
 `r emojifont::emoji('flushed')`
 
-No more matrix results. 3D array and we get all of the probabilities back this time. 
+Most people have at least four different scripts for the same model
 
-_Am I working for `glmnet` or is it is working for me?_
+> _Am I working for `glmnet` or is it is working for me?_
 
 Maybe a structure like this would work better:
 
 ```{r better-glmnet, echo = FALSE}
 three_pred
 ```
-
-]
-
 
 ---
 

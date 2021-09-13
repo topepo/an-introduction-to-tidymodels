@@ -118,91 +118,42 @@ A matrix result and we will assume that the `\(\lambda\)` values are in the same
 
 
 ---
+# `glmnet` predictions formats
 
-# `glmnet` Class Predictions
+**Numeric model, numeric prediction**
 
-Predicting an outcome with two classes:
+ - numeric sample x penalty array
 
+--
 
-```r
-predict(two_class_mod, newx = new_x, type = "class")
-```
+**Binary model, class prediction**
 
-```
-##          s0  s1  s2 
-## sample_1 "a" "b" "b"
-## sample_2 "a" "b" "b"
-```
+- _character_ sample x penalty array  (Note: outcome input is required to be a factor)
 
-Not factors! That's different from what is required for the `y` argument. From `?glmnet`:
+--
 
-&gt; For `family="binomial"` [`y`] should be either a factor with two levels, or a two-column matrix of counts or proportions
+**Binary model, probability prediction**
 
+- _numeric_ sample x penalty array (values are 2nd factor level)
 
-I'm guessing that this is because they want to keep the result a matrix (to be consistent). 
+--
 
+**Multinomial model, probability prediction**
 
----
-
-# `glmnet` Class Probabilities (Two Classes)
+- _numeric_ class x sample x penalty array
 
 
-```r
-predict(two_class_mod, newx = new_x, type = "response")
-```
-
-```
-##           s0  s1    s2
-## sample_1 0.5 0.5 0.506
-## sample_2 0.5 0.5 0.526
-```
-
-Okay, we get a matrix of the probability for the _second_ level of the outcome factor. 
-
-To make this fit into most code, we can manually calculate the other probability. No biggie!
 
 
 ---
 
-# `glmnet` Class Probabilities (Three Classes)
-
-.pull-left[
-
-
-```r
-predict(three_class_mod, newx = new_x, 
-        type = "response")
-```
-
-```
-## , , s0
-## 
-##              a     b     c
-## sample_1 0.333 0.333 0.333
-## sample_2 0.333 0.333 0.333
-## 
-## , , s1
-## 
-##              a     b     c
-## sample_1 0.333 0.333 0.333
-## sample_2 0.333 0.333 0.333
-## 
-## , , s2
-## 
-##              a     b     c
-## sample_1 0.373 0.244 0.383
-## sample_2 0.327 0.339 0.334
-```
-
-]
-.pull-right[
-
+# `glmnet` predictions formats
 
 😳
 
-No more matrix results. 3D array and we get all of the probabilities back this time. 
+Most people have at least four different scripts for the same model
 
-_Am I working for `glmnet` or is it is working for me?_
+&gt; _Am I working for `glmnet` or is it is working for me?_
 
 Maybe a structure like this would work better:
 
@@ -218,9 +169,6 @@ Maybe a structure like this would work better:
 ## 5 0.373 0.244 0.383   0.01
 ## 6 0.327 0.339 0.334   0.01
 ```
-
-]
-
 
 ---
 
@@ -354,18 +302,24 @@ library(tidymodels)
 ```
 
 ```
+## Registered S3 method overwritten by 'tune':
+##   method                   from   
+##   required_pkgs.model_spec parsnip
+```
+
+```
 ## ── Attaching packages ────────────────────────────────────── tidymodels 0.1.3 ──
 ```
 
 ```
-## ✓ broom        0.7.9      ✓ recipes      0.1.16
-## ✓ dials        0.0.9      ✓ rsample      0.1.0 
-## ✓ dplyr        1.0.7      ✓ tibble       3.1.3 
-## ✓ ggplot2      3.3.5      ✓ tidyr        1.1.3 
-## ✓ infer        1.0.0      ✓ tune         0.1.6 
-## ✓ modeldata    0.1.1      ✓ workflows    0.2.3 
-## ✓ parsnip      0.1.7      ✓ workflowsets 0.1.0 
-## ✓ purrr        0.3.4      ✓ yardstick    0.0.8
+## ✓ broom        0.7.9           ✓ recipes      0.1.16.9000
+## ✓ dials        0.0.9.9000      ✓ rsample      0.1.0      
+## ✓ dplyr        1.0.7           ✓ tibble       3.1.4      
+## ✓ ggplot2      3.3.5           ✓ tidyr        1.1.3      
+## ✓ infer        1.0.0           ✓ tune         0.1.6      
+## ✓ modeldata    0.1.1           ✓ workflows    0.2.3      
+## ✓ parsnip      0.1.7.900       ✓ workflowsets 0.1.0      
+## ✓ purrr        0.3.4           ✓ yardstick    0.0.8
 ```
 
 ```
@@ -381,17 +335,66 @@ tidymodels_prefer(quiet = FALSE)
 
 ```
 ## [conflicted] Will prefer dplyr::filter over any other package
+```
+
+```
 ## [conflicted] Will prefer dplyr::select over any other package
+```
+
+```
 ## [conflicted] Will prefer dplyr::slice over any other package
+```
+
+```
 ## [conflicted] Will prefer dplyr::rename over any other package
+```
+
+```
 ## [conflicted] Will prefer dials::neighbors over any other package
+```
+
+```
 ## [conflicted] Will prefer parsnip::fit over any other package
+```
+
+```
 ## [conflicted] Will prefer plsmod::pls over any other package
+```
+
+```
 ## [conflicted] Will prefer purrr::map over any other package
+```
+
+```
 ## [conflicted] Will prefer recipes::step over any other package
+```
+
+```
 ## [conflicted] Will prefer themis::step_downsample over any other package
+```
+
+```
 ## [conflicted] Will prefer themis::step_upsample over any other package
-##  etc etc...
+```
+
+```
+## [conflicted] Will prefer tune::tune over any other package
+```
+
+```
+## [conflicted] Will prefer yardstick::precision over any other package
+```
+
+```
+## [conflicted] Will prefer yardstick::recall over any other package
+```
+
+```
+## ── Conflicts ──────────────────────────────────────────── tidymodels_prefer() ──
+```
+
+```
+## 
 ```
 ]
 
